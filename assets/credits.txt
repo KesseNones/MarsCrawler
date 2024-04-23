@@ -1,0 +1,11 @@
+  JetBrains [This Font!]
+  JetBrainsMono*.ttf fonts
+  https://www.jetbrains.com/lp/mono/
+  free/opensource no credit required
+
+  Assets By Jesse A. Jones [me]:
+    -All the assets were made by me that were used in the game.
+    -Font used for text was Times New Roman Bold featured in GIMP.
+    -The assets were created using the open source tool GIMP.
+
+  Enjoy the game!
