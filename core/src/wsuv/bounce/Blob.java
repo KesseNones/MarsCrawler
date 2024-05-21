@@ -26,7 +26,7 @@ public class Blob extends Sprite {
         tiles = map;
         path = p;
         state = BlobState.WANDERING;
-        distanceThresholdInit = 5;
+        distanceThresholdInit = 4;
         gasTimerStartVal = 500;
         gasTimer = gasTimerStartVal;
         currentDistanceThreshold = distanceThresholdInit;
