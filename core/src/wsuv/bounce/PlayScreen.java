@@ -496,7 +496,7 @@ public class PlayScreen extends ScreenAdapter {
             //Moves all existing blobs.
             for (Blob blob : blobs) {
                 if (blob != null && blob.isAlive) {
-                    blob.move(rover.isShielded);
+                    blob.move(rover.isShielded, rover.getCenter());
 
                     //If blob is over rover, consume the rover and drop mineral if the rover's carrying one.
                     float xDelta = Math.abs(rover.getX() - blob.getX());
