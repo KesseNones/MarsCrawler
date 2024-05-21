@@ -26,7 +26,7 @@ public class Blob extends Sprite {
         tiles = map;
         path = p;
         state = BlobState.WANDERING;
-        distanceThresholdInit = 5;
+        distanceThresholdInit = 4;
         gasTimerStartVal = 500;
         gasTimer = gasTimerStartVal;
         currentDistanceThreshold = distanceThresholdInit;
@@ -54,7 +54,7 @@ public class Blob extends Sprite {
         return rowCol;
     }
 
-    public void move(boolean roverHasShield){
+    public void move(boolean roverHasShield, float[] roverCoords){
         float[] center = getCenter();
         int[] idealCoords = tiles.indexToCoords(tiles.coordsToIndex(center[0] -
                 (tiles.tileSize / 2f), center[1] - (tiles.tileSize / 2f)));
@@ -65,11 +65,19 @@ public class Blob extends Sprite {
             gasTimer = gasTimerStartVal;
             //If blob is close enough to player, chase the player,
             // otherwise randomly wander by acting like a roomba.
-            if (path.graph[tiles.coordsToIndex(center[0] - (tiles.tileSize / 2f),
-                    center[1] - (tiles.tileSize / 2f))].distanceToSource <= currentDistanceThreshold
-                    && !roverHasShield){
-                state = BlobState.CHASE;
-                setTexture(blobTextures[1]);
+            if (!roverHasShield){
+                float[] blobCoords = this.getCenter();
+                float crowDist = (float)Math.sqrt(
+                        Math.pow(Math.abs(roverCoords[0] - blobCoords[0]), 2)
+                                +
+                        Math.pow(Math.abs(roverCoords[1] - blobCoords[1]), 2));
+                if (crowDist < (currentDistanceThreshold * tiles.tileSize)){
+                    state = BlobState.CHASE;
+                    setTexture(blobTextures[1]);
+                }else{
+                    state = BlobState.WANDERING;
+                    setTexture(blobTextures[0]);
+                }
             }else{
                 state = BlobState.WANDERING;
                 setTexture(blobTextures[0]);

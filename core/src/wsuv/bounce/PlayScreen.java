@@ -486,8 +486,15 @@ public class PlayScreen extends ScreenAdapter {
         if (!hud.isOpen() && state == SubState.PLAYING){
             if (rover.alive()){
                 rover.moveRover();
-                //If rover has moved, recompute pathfinding for blobs.
-                if (previousRoverIndex != tiles.coordsToIndex(rover.getX(), rover.getY())){
+
+                //Checks to see if any blobs are chasing rover.
+                boolean anyBlobIsChasing = false;
+                for (Blob b : blobs){
+                    anyBlobIsChasing = anyBlobIsChasing || b.state == Blob.BlobState.CHASE;
+                }
+
+                //If any blobs are chasing AND rover has moved, recompute pathfinding for blobs.
+                if (anyBlobIsChasing && (previousRoverIndex != tiles.coordsToIndex(rover.getX(), rover.getY()))){
                     blobGuide.dsAlg(tiles.coordsToIndex(rover.getX(), rover.getY()));
                     previousRoverIndex = tiles.coordsToIndex(rover.getX(), rover.getY());
                 }
@@ -496,7 +503,7 @@ public class PlayScreen extends ScreenAdapter {
             //Moves all existing blobs.
             for (Blob blob : blobs) {
                 if (blob != null && blob.isAlive) {
-                    blob.move(rover.isShielded);
+                    blob.move(rover.isShielded, rover.getCenter());
 
                     //If blob is over rover, consume the rover and drop mineral if the rover's carrying one.
                     float xDelta = Math.abs(rover.getX() - blob.getX());
